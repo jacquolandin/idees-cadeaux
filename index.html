@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Idées Cadeaux</title>
+  <meta name="description" content="Listes de cadeaux partagées entre famille et amis, sans doublon ni spoiler.">
+  <meta name="theme-color" content="#7a2633" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1b1416" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <!-- Ne pas transmettre l'adresse (et donc les jetons d'invitation) aux sites des liens -->
+  <meta name="referrer" content="no-referrer">
+  <!-- Politique de sécurité : scripts uniquement depuis ce site et le CDN de supabase-js -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cdn.jsdelivr.net; img-src 'self' data:; style-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Idées Cadeaux">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/+esm" crossorigin>
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/" class="brand"><span aria-hidden="true">🎁</span> Idées Cadeaux</a>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <p class="loading" role="status">Chargement…</p>
+    <noscript><p>Ce site a besoin de JavaScript pour fonctionner.</p></noscript>
+  </main>
+
+  <nav id="tabbar" class="tabbar" aria-label="Navigation principale" hidden></nav>
+
+  <div id="toasts" class="toasts" aria-live="polite"></div>
+</body>
+</html>

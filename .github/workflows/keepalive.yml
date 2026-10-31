@@ -1,0 +1,41 @@
+# =============================================================================
+#  Empêche la mise en pause du projet Supabase gratuit (après ~7 jours sans
+#  activité) en l'interrogeant tous les trois jours.
+#
+#  Rien à configurer : l'adresse et la clé publique sont lues dans config.js.
+#  On peut aussi le lancer à la main : onglet Actions > Keepalive > Run workflow.
+# =============================================================================
+name: Keepalive Supabase
+
+on:
+  schedule:
+    - cron: '17 6 */3 * *'   # tous les trois jours à 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Interroger l'API Supabase
+        run: |
+          URL=$(grep -oE "SUPABASE_URL = '[^']+'" config.js | cut -d"'" -f2)
+          KEY=$(grep -oE "SUPABASE_ANON_KEY = '[^']+'" config.js | cut -d"'" -f2)
+          if echo "$URL" | grep -q 'VOTRE-PROJET'; then
+            echo "config.js n'est pas encore rempli : rien à faire."
+            exit 0
+          fi
+          # Une requête sur la base (sans données : le rôle anonyme n'a accès à rien)
+          CODE=$(curl -s -o /dev/null -w '%{http_code}' \
+            "$URL/rest/v1/events?select=id&limit=1" \
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY")
+          echo "Réponse de Supabase : HTTP $CODE"
+          # 200, 401 ou 403 prouvent que le projet est éveillé et a reçu la requête
+          case "$CODE" in
+            200|401|403|404) echo "Projet actif." ;;
+            *) echo "Le projet ne répond pas : vérifiez qu'il n'est pas en pause."; exit 1 ;;
+          esac
